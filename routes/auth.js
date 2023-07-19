@@ -43,18 +43,18 @@ router.post(
 
         // User Object
         const userObj = {
-          "firstName":req.body.firstName ?? "",
-          "lastName":req.body.lastName ?? "",
-          "title":req.body.title ?? "",
-          "description":req.body.description ?? "",
-          "fullName":req.body.fullName ?? "",
-          "email":req.body.email ?? "",
-          "location":req.body.location ?? "",
-          "avatar":req.body.avatar ?? "",
-          "coverImage":req.body.coverImage ?? "",
-          "password":req.body.password ?? "",
-          "accountId": req.body.accountId ?? ""
-        }
+          firstName: req.body.firstName ?? "",
+          lastName: req.body.lastName ?? "",
+          title: req.body.title ?? "",
+          description: req.body.description ?? "",
+          fullName: req.body.fullName ?? "",
+          email: req.body.email ?? "",
+          location: req.body.location ?? "",
+          avatar: req.body.avatar ?? "",
+          coverImage: req.body.coverImage ?? "",
+          password: req.body.password ?? "",
+          accountId: req.body.accountId ?? "",
+        };
 
         // Create the user
         Users.create(userObj)
@@ -129,17 +129,15 @@ router.post(
 );
 
 // ROUTE 3: Get a user using : GET "api/auth/user-details". require auth
-router.get("/user-details",fetchUser, async (req, res) => {
+router.get("/user-details", fetchUser, async (req, res) => {
   try {
     let userId = req.user;
     let user = await Users.findById(userId).select("-password");
     if (!user) {
-      return res
-        .status(404)
-        .json({ errors: "User not found" });
+      return res.status(404).json({ errors: "User not found" });
     }
     return res.status(200).json({
-      userData: user
+      userData: user,
     });
   } catch (error) {
     console.log(error.message);
