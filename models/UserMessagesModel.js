@@ -23,4 +23,4 @@ const UserMessagesSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model("userMessages", UserMessagesSchema);
+module.exports = mongoose.model("user_messages", UserMessagesSchema);

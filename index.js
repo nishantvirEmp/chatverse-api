@@ -23,4 +23,4 @@ app.use(express.json());
 // Routes calls
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/posts", require("./routes/posts"));
-// app.use("/api/userMessages", require("./routes/userMessages"));
+app.use("/api/userMessages", require("./routes/userMessages"));
