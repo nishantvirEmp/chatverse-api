@@ -1,24 +1,21 @@
 const express = require("express");
 
 const router = express.Router();
-const Users = require("../models/Users");
+const Posts = require("../models/Posts");
 const { query, body, validationResult } = require("express-validator");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
 const fetchUser = require("../middleware/fetchUser");
 
 const JWT_SECRET = "Nishant@is$awesome";
 
 // ROUTE 1: Create a user using : POST "api/auth/create-user". Doesn't require auth
 router.post(
-  "/create-user",
+  "/create-post",
   // Validation setup for req.body
   [
-    body("email", "Email is not valid").isEmail(),
-    body("password", "Password should be at least 5 characters").isLength({
-      min: 5,
-    }),
+    body("title", "title should be at least 3 characters").isLength({ min: 3 }),
+    body("slug", "slug should be at least 3 characters").isLength({ min: 3 }),
   ],
+  fetchUser,
   async (req, res) => {
     // inbuilt validation method to validate the values and returning the errors
     const errors = validationResult(req);
@@ -30,41 +27,15 @@ router.post(
 
     try {
       // Check if email already exists
-      let user = await Users.findOne({ email: req.body.email });
-
-      //return res.status(400).json({ users: user });
-      if (user) {
-        return res.status(400).json({ errors: "email already exist" });
+      let post = await Posts.findOne({ slug: req.body.slug });
+      if (post) {
+        return res.status(400).json({ errors: "post already exist" });
       } else {
-        const salt = await bcrypt.genSalt(10);
-        const secretPass = await bcrypt.hash(req.body.password, salt);
 
-        req.body.password = secretPass;
-
-        // User Object
-        const userObj = {
-          "firstName":req.body.firstName ?? "",
-          "lastName":req.body.lastName ?? "",
-          "title":req.body.title ?? "",
-          "description":req.body.description ?? "",
-          "fullName":req.body.fullName ?? "",
-          "email":req.body.email ?? "",
-          "location":req.body.location ?? "",
-          "avatar":req.body.avatar ?? "",
-          "coverImage":req.body.coverImage ?? "",
-          "password":req.body.password ?? "",
-          "accountId": req.body.accountId ?? ""
-        }
-
-        // Create the user
-        Users.create(userObj)
+        // Create the post
+        Posts.create(req.body)
           .then((response) => {
-            const data = {
-              user: response.id,
-            };
-
-            const authToken = jwt.sign(data, JWT_SECRET);
-            res.status(200).json({ authToken });
+            res.status(200).json({ "message": "Created successfully" });
           })
           .catch((error) => {
             res
@@ -79,6 +50,7 @@ router.post(
   }
 );
 
+/*
 // ROUTE 2: Authenticate a user using : POST "api/auth/login". Doesn't require auth
 router.post(
   "/login",
@@ -146,5 +118,6 @@ router.get("/user-details",fetchUser, async (req, res) => {
     res.status(500).send({ message: "some error occurred" });
   }
 });
+*/
 
 module.exports = router;
