@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "serve": "nodemon index.js"
   },
   "author": "nishant shukla",
   "license": "ISC",
@@ -14,5 +15,8 @@
     "express-validator": "^7.0.1",
     "jsonwebtoken": "^9.0.1",
     "mongoose": "^7.3.4"
+  },
+  "devDependencies": {
+    "nodemon": "^3.0.1"
   }
 }
