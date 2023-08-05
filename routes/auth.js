@@ -18,6 +18,9 @@ router.post(
     body("password", "Password should be at least 5 characters").isLength({
       min: 5,
     }),
+    body("firstName", "First name should be at least 3 characters").isLength({
+      min: 3,
+    }),
   ],
   async (req, res) => {
     // inbuilt validation method to validate the values and returning the errors
@@ -138,6 +141,60 @@ router.get("/user-details", fetchUser, async (req, res) => {
     }
     return res.status(200).json({
       userData: user,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: "some error occurred" });
+  }
+});
+
+// ROUTE 3: Get a user using : GET "api/auth/user-details". require auth
+router.get("/settings/:id", fetchUser, async (req, res) => {
+  try {
+    let userId = req.user;
+    let user = await Users.findById(userId).select("-password");
+    let userData = {};
+
+    if (!user) {
+      return res.status(404).json({ errors: "User not found" });
+    }
+
+    // Format data
+    userData.firstName = user.firstName ?? "";
+    userData.lastName = user.lastName ?? "";
+    userData.title = user.title ?? "";
+    userData.description = user.description ?? "";
+    userData.fullName = user.fullName ?? "";
+    userData.email = user.email ?? "";
+    userData.location = user.location ?? "";
+    userData.avatar = user.avatar ?? "";
+    userData.profile = user.avatar ?? "";
+    userData.coverImage = user.coverImage ?? "";
+
+    let data = {};
+    data.basicDetails = userData;
+
+    let theme = {};
+    theme.image = "bgimg-radio5";
+    data.theme = theme;
+
+    let privacy = {};
+    privacy.displayprofilePhoto = "selected";
+    privacy.displayLastSeen = true;
+    privacy.displayStatus = "everyone";
+    privacy.readReceipts = true;
+    privacy.displayGroups = "everyone";
+    data.privacy = privacy;
+    
+    let security = {};
+    security.securityNotification = false;
+    data.security = security;
+
+    data.status = "Active";
+
+    return res.status(200).json({
+      status: true,
+      data: data,
     });
   } catch (error) {
     console.log(error.message);

@@ -14,13 +14,19 @@ connectToMongo()
   });
 
 app.listen(port, () => {
-  console.log("app is running");
+  console.log("app is running on "+port);
 });
 
 // Middleware: to accept the Json format, otherwise Json data will not handled on the request body
 app.use(express.json());
 
 // Routes calls
+// app.get("/", async (req, res) => {
+//   return res.status.json({
+//     data: "data"
+//   })
+// })
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/posts", require("./routes/posts"));
-app.use("/api/userMessages", require("./routes/userMessages"));
+app.use("/api/user-messages", require("./routes/userMessages"));
+app.use("/api/contacts", require("./routes/contact"));
