@@ -40,7 +40,7 @@ router.post(
 );
 
 // ROUTE 2: get a user using : GET "api/auth/fetch-user-message/:id". Doesn't require auth
-router.get("/fetch-user-message/:id", fetchUser, async (req, res) => {
+router.get("/get-msg/:id", fetchUser, async (req, res) => {
   try {
     // get user message
     const data = await UserMessages.findById(req.params.id);
@@ -54,7 +54,7 @@ router.get("/fetch-user-message/:id", fetchUser, async (req, res) => {
 });
 
 // ROUTE 2: get a user using : GET "api/auth/fetch-user-message/:id". Doesn't require auth
-router.get("/fetch-user-message-by-user/:id", fetchUser, async (req, res) => {
+router.get("/get-msg-by-user/:id", fetchUser, async (req, res) => {
   try {
     // get user message
     let data1 = await UserMessages.find({
