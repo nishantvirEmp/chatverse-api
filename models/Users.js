@@ -30,6 +30,9 @@ const UsersSchema = new Schema({
   avatar: {
     type: String
   },
+  profile: {
+    type: String
+  },
   coverImage: {
     type: String
   },
