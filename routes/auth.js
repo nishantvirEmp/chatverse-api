@@ -54,6 +54,7 @@ router.post(
           email: req.body.email ?? "",
           location: req.body.location ?? "",
           avatar: req.body.avatar ?? "",
+          profile: req.body.avatar ?? "",
           coverImage: req.body.coverImage ?? "",
           password: req.body.password ?? "",
           accountId: req.body.accountId ?? "",
@@ -139,8 +140,21 @@ router.get("/user-details", fetchUser, async (req, res) => {
     if (!user) {
       return res.status(404).json({ errors: "User not found" });
     }
+
+    // Format data
+    userData.firstName = user.firstName ?? "";
+    userData.lastName = user.lastName ?? "";
+    userData.title = user.title ?? "";
+    userData.description = user.description ?? "";
+    userData.fullName = user.fullName ?? "";
+    userData.email = user.email ?? "";
+    userData.location = user.location ?? "";
+    userData.avatar = user.avatar ?? "";
+    userData.profile = user.avatar ?? "";
+    userData.coverImage = user.coverImage ?? "";
+
     return res.status(200).json({
-      userData: user,
+      userData: userData,
     });
   } catch (error) {
     console.log(error.message);
