@@ -199,7 +199,7 @@ router.get("/settings/:id", fetchUser, async (req, res) => {
     privacy.readReceipts = true;
     privacy.displayGroups = "everyone";
     data.privacy = privacy;
-    
+
     let security = {};
     security.securityNotification = false;
     data.security = security;
@@ -209,6 +209,25 @@ router.get("/settings/:id", fetchUser, async (req, res) => {
     return res.status(200).json({
       status: true,
       data: data,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: "some error occurred" });
+  }
+});
+
+// ROUTE 3: Get a user using : GET "api/auth/user-details". require auth
+router.get("/get-users-count", async (req, res) => {
+  try {
+    let users = await Users.find({}).select("-password");
+
+    if (!users) {
+      return res.status(404).json({ errors: "Users not found" });
+    }
+
+    return res.status(200).json({
+      status: true,
+      data: users.length,
     });
   } catch (error) {
     console.log(error.message);
