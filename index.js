@@ -1,6 +1,7 @@
 const connectToMongo = require("./db");
 
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
 const port = 5000; // the port number where app will run
@@ -14,11 +15,14 @@ connectToMongo()
   });
 
 app.listen(port, () => {
-  console.log("app is running on "+port);
+  console.log("app is running on " + port);
 });
 
 // Middleware: to accept the Json format, otherwise Json data will not handled on the request body
 app.use(express.json());
+
+// CORS is enabled for all origins
+app.use(cors());
 
 // Routes calls
 // app.get("/", async (req, res) => {

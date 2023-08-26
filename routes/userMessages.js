@@ -88,4 +88,23 @@ router.get("/fetch-all", fetchUser, async (req, res) => {
   }
 });
 
+// ROUTE 3: Get a user using : GET "api/auth/user-details". require auth
+router.get("/get-messages-count", async (req, res) => {
+  try {
+    let users = await UserMessages.find({});
+
+    if (!users) {
+      return res.status(404).json({ errors: "Messages not found" });
+    }
+
+    return res.status(200).json({
+      status: true,
+      data: users.length,
+    });
+  } catch (error) {
+    console.log(error.message);
+    res.status(500).send({ message: "some error occurred" });
+  }
+});
+
 module.exports = router;
